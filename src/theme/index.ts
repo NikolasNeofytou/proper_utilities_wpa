@@ -168,7 +168,7 @@ export const designTokens = {
 } as const;
 
 // Mantine theme configuration
-export const utilityProTheme: MantineTheme = createTheme({
+export const utilityProTheme = createTheme({
   // Color configuration
   primaryColor: 'primary',
   primaryShade: { light: 5, dark: 6 },
@@ -269,7 +269,7 @@ export const utilityProTheme: MantineTheme = createTheme({
         size: 'md',
         radius: 'md',
       },
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           fontWeight: designTokens.typography.fontWeight.medium,
           borderWidth: rem(1),
@@ -293,53 +293,6 @@ export const utilityProTheme: MantineTheme = createTheme({
           minHeight: rem(44), // Touch-friendly minimum
         },
       }),
-      
-      variants: {
-        // Custom utility-specific button variants
-        utility: (theme) => ({
-          root: {
-            backgroundColor: theme.colors.primary[5],
-            borderColor: theme.colors.primary[5],
-            color: theme.white,
-            
-            '&:hover': {
-              backgroundColor: theme.colors.primary[6],
-              borderColor: theme.colors.primary[6],
-            },
-            
-            '&:active': {
-              backgroundColor: theme.colors.primary[7],
-              borderColor: theme.colors.primary[7],
-            },
-          },
-        }),
-        
-        success: (theme) => ({
-          root: {
-            backgroundColor: theme.colors.success[5],
-            borderColor: theme.colors.success[5],
-            color: theme.white,
-            
-            '&:hover': {
-              backgroundColor: theme.colors.success[6],
-              borderColor: theme.colors.success[6],
-            },
-          },
-        }),
-        
-        warning: (theme) => ({
-          root: {
-            backgroundColor: theme.colors.warning[5],
-            borderColor: theme.colors.warning[5],
-            color: theme.white,
-            
-            '&:hover': {
-              backgroundColor: theme.colors.warning[6],
-              borderColor: theme.colors.warning[6],
-            },
-          },
-        }),
-      },
     },
     
     // Input components
@@ -348,7 +301,7 @@ export const utilityProTheme: MantineTheme = createTheme({
         size: 'md',
         radius: 'md',
       },
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         label: {
           fontWeight: designTokens.typography.fontWeight.medium,
           marginBottom: theme.spacing.xs,
@@ -387,7 +340,7 @@ export const utilityProTheme: MantineTheme = createTheme({
         withBorder: true,
         shadow: 'sm',
       },
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           borderColor: theme.colors.gray[2],
           backgroundColor: theme.white,
@@ -409,7 +362,7 @@ export const utilityProTheme: MantineTheme = createTheme({
         withTableBorder: true,
         withColumnBorders: false,
       },
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         th: {
           backgroundColor: theme.colors.gray[0],
           fontWeight: designTokens.typography.fontWeight.semibold,
@@ -435,7 +388,7 @@ export const utilityProTheme: MantineTheme = createTheme({
     
     // Navigation components
     Navbar: {
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           backgroundColor: theme.white,
           borderColor: theme.colors.gray[2],
@@ -445,7 +398,7 @@ export const utilityProTheme: MantineTheme = createTheme({
     
     // Notification component
     Notification: {
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           borderRadius: theme.radius.md,
           boxShadow: theme.shadows.lg,
@@ -480,10 +433,8 @@ export const utilityProTheme: MantineTheme = createTheme({
 });
 
 // Dark theme variant
-export const utilityProDarkTheme: MantineTheme = createTheme({
+export const utilityProDarkTheme = createTheme({
   ...utilityProTheme,
-  
-  colorScheme: 'dark',
   
   colors: {
     ...utilityProTheme.colors,
@@ -509,7 +460,7 @@ export const utilityProDarkTheme: MantineTheme = createTheme({
     
     Card: {
       ...utilityProTheme.components?.Card,
-      styles: (theme) => ({
+      styles: (theme: MantineTheme) => ({
         root: {
           backgroundColor: theme.colors.dark[8],
           borderColor: theme.colors.dark[4],

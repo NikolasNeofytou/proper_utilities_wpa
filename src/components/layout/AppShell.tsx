@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import type { ReactNode, HTMLAttributes } from 'react';
 
 export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
@@ -36,8 +36,8 @@ export const AppShell = forwardRef<HTMLDivElement, AppShellProps>(
     header,
     footer,
     aside,
-    withBorder = true,
-    navbarOffsetBreakpoint = 'md',
+    withBorder: _withBorder = true,
+    navbarOffsetBreakpoint: _navbarOffsetBreakpoint = 'md',
     className = '',
     ...props
   }, ref) => {
@@ -99,7 +99,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     width = 280,
     collapsed = false,
     withBorder = true,
-    breakpoint = 'md',
+    breakpoint: _breakpoint = 'md',
     className = '',
     ...props
   }, ref) => {
