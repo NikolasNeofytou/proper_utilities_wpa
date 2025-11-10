@@ -31,5 +31,5 @@ afterEach(() => {
   cleanup();
 });
 
-// Make expect available globally
-global.expect = expect;
+// Export expect for use in tests (not setting on global)
+export { expect };
