@@ -10,7 +10,7 @@ import {
   Badge,
   Menu,
 } from '@mantine/core';
-import { IconSearch, IconDashboard, IconLogout, IconUser } from '@tabler/icons-react';
+import { IconSearch, IconDashboard, IconLogout, IconUser, IconReceipt } from '@tabler/icons-react';
 import { authService } from '../../services/api';
 
 export function AppLayout() {
@@ -56,6 +56,14 @@ export function AppLayout() {
                 onClick={() => navigate('/dashboard')}
               >
                 Dashboard
+              </Button>
+              <Button
+                variant={currentPath.startsWith('/bills') ? 'filled' : 'light'}
+                size="sm"
+                leftSection={<IconReceipt size={16} />}
+                onClick={() => navigate('/bills')}
+              >
+                Bills
               </Button>
               <Button
                 variant={currentPath === '/investigation' ? 'filled' : 'light'}

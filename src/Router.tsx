@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Investigation from './pages/Investigation';
+import Bills from './pages/Bills';
+import BillDetail from './pages/BillDetail';
 import { LoginPage, RegisterPage } from './pages/auth';
 import { authService } from './services/api';
 
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
       {
         path: 'investigation',
         element: <Investigation />,
+      },
+      {
+        path: 'bills',
+        element: <Bills />,
+      },
+      {
+        path: 'bills/:id',
+        element: <BillDetail />,
       },
     ],
   },
