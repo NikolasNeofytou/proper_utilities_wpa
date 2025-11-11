@@ -97,6 +97,122 @@ The database includes the following main entities:
 #### POST `/api/v1/auth/register`
 Register a new user account.
 
+#### POST `/api/v1/auth/login`
+Authenticate and receive JWT token.
+
+#### GET `/api/v1/auth/me`
+Get current authenticated user (protected).
+
+### Properties (`/api/v1/properties`)
+
+#### GET `/api/v1/properties`
+List all properties for the authenticated user (paginated).
+
+**Query Parameters:**
+- `page` (number): Page number (default: 1)
+- `limit` (number): Items per page (default: 10, max: 100)
+
+#### GET `/api/v1/properties/:id`
+Get property details by ID including units and meters.
+
+#### POST `/api/v1/properties`
+Create a new property.
+
+**Request Body:**
+```json
+{
+  "name": "Apartment Building A",
+  "address": "123 Main Street",
+  "city": "Athens",
+  "postalCode": "10001",
+  "country": "Greece",
+  "type": "BUILDING",
+  "totalUnits": 12
+}
+```
+
+#### POST `/api/v1/properties/:id/units`
+Create a new unit for a property.
+
+**Request Body:**
+```json
+{
+  "unitNumber": "A101",
+  "floor": 1,
+  "area": 85.5,
+  "bedrooms": 2,
+  "bathrooms": 1,
+  "isOccupied": true
+}
+```
+
+### Bills (`/api/v1/bills`)
+
+#### GET `/api/v1/bills`
+List all bills for the authenticated user (paginated).
+
+**Query Parameters:**
+- `page` (number): Page number
+- `limit` (number): Items per page
+- `status` (string): Filter by status (PENDING, PAID, OVERDUE, CANCELLED, DISPUTED)
+- `propertyId` (string): Filter by property ID
+
+#### GET `/api/v1/bills/:id`
+Get bill details by ID including payments.
+
+#### POST `/api/v1/bills`
+Create a new bill (Admin/Manager only).
+
+**Request Body:**
+```json
+{
+  "propertyId": "clxxxx...",
+  "periodStart": "2025-01-01T00:00:00Z",
+  "periodEnd": "2025-01-31T23:59:59Z",
+  "dueDate": "2025-02-15T23:59:59Z",
+  "totalAmount": 145.50,
+  "consumption": 450,
+  "rate": 0.32,
+  "taxes": 5.50,
+  "fees": 2.00
+}
+```
+
+#### GET `/api/v1/bills/stats/overview`
+Get bill statistics (total, pending, paid, overdue, amounts).
+
+### Payments (`/api/v1/payments`)
+
+#### GET `/api/v1/payments`
+List all payments for the authenticated user (paginated).
+
+**Query Parameters:**
+- `page` (number): Page number
+- `limit` (number): Items per page
+- `status` (string): Filter by status (PENDING, COMPLETED, FAILED, REFUNDED)
+- `billId` (string): Filter by bill ID
+
+#### GET `/api/v1/payments/:id`
+Get payment details by ID.
+
+#### POST `/api/v1/payments`
+Create a new payment.
+
+**Request Body:**
+```json
+{
+  "billId": "clxxxx...",
+  "amount": 145.50,
+  "paymentMethod": "CREDIT_CARD",
+  "transactionId": "TXN123456",
+  "notes": "Payment via online portal"
+}
+```
+
+#### GET `/api/v1/payments/stats/overview`
+Get payment statistics (total, completed, pending, failed, amounts).
+
+
 **Request Body:**
 ```json
 {

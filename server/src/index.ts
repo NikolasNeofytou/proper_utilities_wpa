@@ -7,6 +7,9 @@ import swaggerUi from '@fastify/swagger-ui';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
+import propertyRoutes from './routes/properties';
+import billRoutes from './routes/bills';
+import paymentRoutes from './routes/payments';
 import { authenticate } from './middleware/auth';
 
 // Load environment variables
@@ -80,6 +83,12 @@ async function registerPlugins() {
           },
         },
       },
+      tags: [
+        { name: 'Authentication', description: 'Authentication endpoints' },
+        { name: 'Properties', description: 'Property management endpoints' },
+        { name: 'Bills', description: 'Billing endpoints' },
+        { name: 'Payments', description: 'Payment endpoints' },
+      ],
     },
   });
 
@@ -99,6 +108,15 @@ async function registerRoutes() {
 
   // Auth routes
   server.register(authRoutes, { prefix: `${apiPrefix}/auth` });
+
+  // Property routes
+  server.register(propertyRoutes, { prefix: `${apiPrefix}/properties` });
+
+  // Bill routes
+  server.register(billRoutes, { prefix: `${apiPrefix}/bills` });
+
+  // Payment routes
+  server.register(paymentRoutes, { prefix: `${apiPrefix}/payments` });
 }
 
 // Health check route

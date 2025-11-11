@@ -101,9 +101,12 @@ Our research has analyzed leading utility companies worldwide including:
 - [x] Backend API development (Fastify + Prisma)
 - [x] Database setup and schema
 - [x] Authentication system (JWT)
+- [x] Properties API (CRUD operations)
+- [x] Bills API (CRUD + statistics)
+- [x] Payments API (CRUD + statistics)
 - [ ] Database migrations
-- [ ] Additional API routes
-- [ ] Basic customer portal integration
+- [ ] Frontend-backend integration
+- [ ] API integration tests
 
 ### Phase 3: Customer Features
 - [ ] Billing and payment system
