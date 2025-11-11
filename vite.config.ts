@@ -25,25 +25,42 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: 'UtilityPro - Διαχείριση Κοινής Ωφέλειας',
+        name: 'UtilityPro - Utilities Management Platform',
         short_name: 'UtilityPro',
-        description: 'Σύγχρονη πλατφόρμα διαχείρισης λογαριασμών και ακινήτων',
+        description: 'Modern platform for managing bills, payments, and properties',
         theme_color: '#3b82f6',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
+        categories: ['productivity', 'finance', 'business'],
         icons: [
           {
             src: 'icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
+        screenshots: [
+          {
+            src: 'screenshots/desktop.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide',
+          },
+          {
+            src: 'screenshots/mobile.png',
+            sizes: '750x1334',
+            type: 'image/png',
+            form_factor: 'narrow',
           },
         ],
       },
@@ -75,6 +92,23 @@ export default defineConfig({
           router: ['react-router-dom'],
         },
       },
+    },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/tests/setup.ts',
+    css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      exclude: [
+        'node_modules/',
+        'src/tests/',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/mockData',
+      ],
     },
   },
 });
