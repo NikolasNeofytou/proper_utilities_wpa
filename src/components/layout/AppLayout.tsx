@@ -83,7 +83,12 @@ export function AppLayout() {
 
                 <Menu.Dropdown>
                   <Menu.Label>Account</Menu.Label>
-                  <Menu.Item leftSection={<IconUser size={14} />}>Profile</Menu.Item>
+                  <Menu.Item 
+                    leftSection={<IconUser size={14} />}
+                    onClick={() => navigate('/profile')}
+                  >
+                    Profile
+                  </Menu.Item>
                   <Menu.Divider />
                   <Menu.Item
                     leftSection={<IconLogout size={14} />}
