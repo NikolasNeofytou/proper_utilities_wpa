@@ -9,14 +9,18 @@ import {
   Button,
   Badge,
   Menu,
+  ActionIcon,
+  useMantineColorScheme,
 } from '@mantine/core';
-import { IconSearch, IconDashboard, IconLogout, IconUser, IconReceipt } from '@tabler/icons-react';
+import { IconSearch, IconDashboard, IconLogout, IconUser, IconReceipt, IconBuilding, IconMoon, IconSun } from '@tabler/icons-react';
 import { authService } from '../../services/api';
+import { NotificationsBell } from './NotificationsBell';
 
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const handleLogout = () => {
     authService.logout();
@@ -44,7 +48,7 @@ export function AppLayout() {
                 UtilityPro
               </Title>
               <Badge size="sm" variant="light" color="blue">
-                Phase 3 Demo
+                v2.0 Enhanced
               </Badge>
             </Group>
 
@@ -66,6 +70,14 @@ export function AppLayout() {
                 Bills
               </Button>
               <Button
+                variant={currentPath.startsWith('/properties') ? 'filled' : 'light'}
+                size="sm"
+                leftSection={<IconBuilding size={16} />}
+                onClick={() => navigate('/properties')}
+              >
+                Properties
+              </Button>
+              <Button
                 variant={currentPath === '/investigation' ? 'filled' : 'light'}
                 size="sm"
                 leftSection={<IconSearch size={16} />}
@@ -73,6 +85,17 @@ export function AppLayout() {
               >
                 Investigation
               </Button>
+
+              <NotificationsBell />
+
+              <ActionIcon
+                variant="light"
+                size="lg"
+                onClick={() => toggleColorScheme()}
+                title="Toggle dark mode"
+              >
+                {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+              </ActionIcon>
 
               <Menu shadow="md" width={200}>
                 <Menu.Target>

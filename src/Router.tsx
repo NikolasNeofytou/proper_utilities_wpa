@@ -4,6 +4,8 @@ import Dashboard from './pages/Dashboard';
 import Investigation from './pages/Investigation';
 import Bills from './pages/Bills';
 import BillDetail from './pages/BillDetail';
+import Properties from './pages/Properties';
+import PropertyDetail from './pages/PropertyDetail';
 import Profile from './pages/Profile';
 import { LoginPage, RegisterPage } from './pages/auth';
 import { authService } from './services/api';
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: 'bills/:id',
         element: <BillDetail />,
+      },
+      {
+        path: 'properties',
+        element: <Properties />,
+      },
+      {
+        path: 'properties/:id',
+        element: <PropertyDetail />,
       },
       {
         path: 'profile',
