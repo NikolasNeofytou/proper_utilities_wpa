@@ -12,15 +12,36 @@ import {
   ActionIcon,
   useMantineColorScheme,
 } from '@mantine/core';
-import { IconSearch, IconDashboard, IconLogout, IconUser, IconReceipt, IconBuilding, IconMoon, IconSun } from '@tabler/icons-react';
+import { IconSearch, IconDashboard, IconLogout, IconUser, IconReceipt, IconBuilding, IconMoon, IconSun, IconSettings } from '@tabler/icons-react';
 import { authService } from '../../services/api';
 import { NotificationsBell } from './NotificationsBell';
+import { useEffect, useState } from 'react';
 
 export function AppLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const response = await authService.getCurrentUser();
+        if (response.success && response.data) {
+          setUserRole(response.data.role);
+        }
+      } catch (error) {
+        console.error('Failed to load user:', error);
+      }
+    };
+
+    if (authService.isAuthenticated()) {
+      loadUser();
+    }
+  }, []);
+
+  const isAdmin = userRole === 'ADMIN' || userRole === 'MANAGER';
 
   const handleLogout = () => {
     authService.logout();
@@ -85,6 +106,17 @@ export function AppLayout() {
               >
                 Investigation
               </Button>
+
+              {isAdmin && (
+                <Button
+                  variant={currentPath.startsWith('/admin') ? 'filled' : 'light'}
+                  size="sm"
+                  leftSection={<IconSettings size={16} />}
+                  onClick={() => navigate('/admin')}
+                >
+                  Admin
+                </Button>
+              )}
 
               <NotificationsBell />
 
