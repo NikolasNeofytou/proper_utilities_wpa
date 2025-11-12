@@ -8,7 +8,7 @@ import Properties from './pages/Properties';
 import PropertyDetail from './pages/PropertyDetail';
 import Profile from './pages/Profile';
 import { LoginPage, RegisterPage } from './pages/auth';
-import { AdminDashboard, UserManagement } from './pages/admin';
+import { AdminDashboard, UserManagement, BillingManagement } from './pages/admin';
 import { authService } from './services/api';
 import { useEffect, useState } from 'react';
 
@@ -139,6 +139,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <UserManagement />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: 'admin/billing',
+        element: (
+          <AdminRoute>
+            <BillingManagement />
           </AdminRoute>
         ),
       },

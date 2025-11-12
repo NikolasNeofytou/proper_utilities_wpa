@@ -1,4 +1,4 @@
-import { Container, Title, Grid, Card, Text, Group, Badge, Stack, SimpleGrid } from '@mantine/core';
+import { Container, Title, Grid, Card, Text, Group, Badge, Stack, SimpleGrid, Button } from '@mantine/core';
 import { 
   IconUsers, 
   IconBuilding, 
@@ -7,11 +7,13 @@ import {
   IconChartBar,
   IconAlertCircle,
   IconTrendingUp,
-  IconTrendingDown
+  IconTrendingDown,
+  IconArrowRight
 } from '@tabler/icons-react';
 import { MetricCard } from '../../components/business/MetricCard';
 import { useEffect, useState } from 'react';
 import { adminService, AdminStats } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 interface RecentActivity {
   id: string;
@@ -22,6 +24,7 @@ interface RecentActivity {
 }
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const [stats, setStats] = useState<AdminStats>({
     totalUsers: 0,
     totalProperties: 0,
@@ -162,6 +165,16 @@ export default function AdminDashboard() {
                 </Badge>
               </Group>
             </Stack>
+
+            <Button
+              variant="light"
+              fullWidth
+              mt="md"
+              rightSection={<IconArrowRight size={14} />}
+              onClick={() => navigate('/admin/billing')}
+            >
+              Manage Billing
+            </Button>
           </Card>
         </Grid.Col>
 
@@ -169,16 +182,16 @@ export default function AdminDashboard() {
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section withBorder inheritPadding py="xs">
               <Group justify="space-between">
-                <Text fw={500}>Property Metrics</Text>
-                <IconBuilding size={20} />
+                <Text fw={500}>User Management</Text>
+                <IconUsers size={20} />
               </Group>
             </Card.Section>
 
             <Stack gap="md" mt="md">
               <Group justify="space-between">
-                <Text size="sm">Occupancy Rate</Text>
+                <Text size="sm">Total Users</Text>
                 <Badge color="blue" variant="light">
-                  {occupancyRate}%
+                  {stats.totalUsers}
                 </Badge>
               </Group>
               
@@ -190,15 +203,57 @@ export default function AdminDashboard() {
               </Group>
               
               <Group justify="space-between">
-                <Text size="sm">Inactive Properties</Text>
-                <Badge color="gray" variant="light">
-                  {stats.totalProperties - activeProperties}
+                <Text size="sm">Recent Signups (7d)</Text>
+                <Badge color="purple" variant="light">
+                  {stats.recentPayments}
                 </Badge>
               </Group>
             </Stack>
+
+            <Button
+              variant="light"
+              fullWidth
+              mt="md"
+              rightSection={<IconArrowRight size={14} />}
+              onClick={() => navigate('/admin/users')}
+            >
+              Manage Users
+            </Button>
           </Card>
         </Grid.Col>
       </Grid>
+
+      <Card shadow="sm" padding="lg" radius="md" withBorder mb="xl">
+        <Card.Section withBorder inheritPadding py="xs">
+          <Group justify="space-between">
+            <Text fw={500}>Property Metrics</Text>
+            <IconBuilding size={20} />
+          </Group>
+        </Card.Section>
+
+        <Stack gap="md" mt="md">
+          <Group justify="space-between">
+            <Text size="sm">Occupancy Rate</Text>
+            <Badge color="blue" variant="light">
+              {occupancyRate}%
+            </Badge>
+          </Group>
+          
+          <Group justify="space-between">
+            <Text size="sm">Active Properties</Text>
+            <Badge color="green" variant="light">
+              {activeProperties}
+            </Badge>
+          </Group>
+          
+          <Group justify="space-between">
+            <Text size="sm">Inactive Properties</Text>
+            <Badge color="gray" variant="light">
+              {stats.totalProperties - activeProperties}
+            </Badge>
+          </Group>
+        </Stack>
+      </Card>
 
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section withBorder inheritPadding py="xs">
