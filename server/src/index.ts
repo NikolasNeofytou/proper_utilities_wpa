@@ -10,6 +10,7 @@ import authRoutes from './routes/auth';
 import propertyRoutes from './routes/properties';
 import billRoutes from './routes/bills';
 import paymentRoutes from './routes/payments';
+import adminRoutes from './routes/admin';
 import { authenticate } from './middleware/auth';
 
 // Load environment variables
@@ -88,6 +89,7 @@ async function registerPlugins() {
         { name: 'Properties', description: 'Property management endpoints' },
         { name: 'Bills', description: 'Billing endpoints' },
         { name: 'Payments', description: 'Payment endpoints' },
+        { name: 'Admin', description: 'Administrative endpoints' },
       ],
     },
   });
@@ -117,6 +119,9 @@ async function registerRoutes() {
 
   // Payment routes
   server.register(paymentRoutes, { prefix: `${apiPrefix}/payments` });
+
+  // Admin routes
+  server.register(adminRoutes, { prefix: `${apiPrefix}/admin` });
 }
 
 // Health check route
