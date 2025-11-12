@@ -11,17 +11,7 @@ import {
 } from '@tabler/icons-react';
 import { MetricCard } from '../../components/business/MetricCard';
 import { useEffect, useState } from 'react';
-
-interface AdminStats {
-  totalUsers: number;
-  totalProperties: number;
-  totalBills: number;
-  totalRevenue: number;
-  pendingPayments: number;
-  overduePayments: number;
-  activeProperties: number;
-  occupancyRate: number;
-}
+import { adminService, AdminStats } from '../../services/api';
 
 interface RecentActivity {
   id: string;
@@ -36,11 +26,9 @@ export default function AdminDashboard() {
     totalUsers: 0,
     totalProperties: 0,
     totalBills: 0,
+    billsByStatus: {},
     totalRevenue: 0,
-    pendingPayments: 0,
-    overduePayments: 0,
-    activeProperties: 0,
-    occupancyRate: 0,
+    recentPayments: 0,
   });
   
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
@@ -53,21 +41,14 @@ export default function AdminDashboard() {
   const loadAdminData = async () => {
     setLoading(true);
     try {
-      // Load stats from various endpoints
-      // For now, we'll use placeholder data
-      // TODO: Implement dedicated admin stats endpoints in the backend
+      // Load stats from admin API
+      const statsResponse = await adminService.getStats();
       
-      setStats({
-        totalUsers: 156,
-        totalProperties: 42,
-        totalBills: 523,
-        totalRevenue: 125430.50,
-        pendingPayments: 23,
-        overduePayments: 8,
-        activeProperties: 38,
-        occupancyRate: 92.5,
-      });
+      if (statsResponse.success && statsResponse.data) {
+        setStats(statsResponse.data);
+      }
       
+      // Set placeholder recent activity (in the future, this would come from an API)
       setRecentActivity([
         {
           id: '1',
@@ -98,6 +79,13 @@ export default function AdminDashboard() {
     }
   };
 
+  // Calculate derived stats
+  const pendingPayments = stats.billsByStatus?.PENDING || 0;
+  const overduePayments = stats.billsByStatus?.OVERDUE || 0;
+  const paidBills = stats.billsByStatus?.PAID || 0;
+  const activeProperties = stats.totalProperties; // All properties are active by default
+  const occupancyRate = 92.5; // Placeholder, would need actual calculation
+
   return (
     <Container size="xl" py="xl">
       <Title order={1} mb="xl">Company Management Dashboard</Title>
@@ -112,7 +100,7 @@ export default function AdminDashboard() {
         />
         <MetricCard
           title="Active Properties"
-          value={`${stats.activeProperties}/${stats.totalProperties}`}
+          value={`${activeProperties}/${stats.totalProperties}`}
           icon={<IconBuilding size={24} />}
           color="green"
           loading={loading}
@@ -150,7 +138,7 @@ export default function AdminDashboard() {
                   <Text size="sm">Paid Bills</Text>
                 </Group>
                 <Badge color="green" variant="light">
-                  {stats.totalBills - stats.pendingPayments - stats.overduePayments}
+                  {paidBills}
                 </Badge>
               </Group>
               
@@ -160,7 +148,7 @@ export default function AdminDashboard() {
                   <Text size="sm">Pending Payments</Text>
                 </Group>
                 <Badge color="yellow" variant="light">
-                  {stats.pendingPayments}
+                  {pendingPayments}
                 </Badge>
               </Group>
               
@@ -170,7 +158,7 @@ export default function AdminDashboard() {
                   <Text size="sm">Overdue Payments</Text>
                 </Group>
                 <Badge color="red" variant="light">
-                  {stats.overduePayments}
+                  {overduePayments}
                 </Badge>
               </Group>
             </Stack>
@@ -190,21 +178,21 @@ export default function AdminDashboard() {
               <Group justify="space-between">
                 <Text size="sm">Occupancy Rate</Text>
                 <Badge color="blue" variant="light">
-                  {stats.occupancyRate}%
+                  {occupancyRate}%
                 </Badge>
               </Group>
               
               <Group justify="space-between">
                 <Text size="sm">Active Properties</Text>
                 <Badge color="green" variant="light">
-                  {stats.activeProperties}
+                  {activeProperties}
                 </Badge>
               </Group>
               
               <Group justify="space-between">
                 <Text size="sm">Inactive Properties</Text>
                 <Badge color="gray" variant="light">
-                  {stats.totalProperties - stats.activeProperties}
+                  {stats.totalProperties - activeProperties}
                 </Badge>
               </Group>
             </Stack>

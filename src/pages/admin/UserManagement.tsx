@@ -25,17 +25,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phone?: string;
-  role: 'ADMIN' | 'MANAGER' | 'CUSTOMER';
-  isActive: boolean;
-  createdAt: string;
-}
+import { adminService, User } from '../../services/api';
 
 export default function UserManagement() {
   const [users, setUsers] = useState<User[]>([]);
@@ -68,38 +58,14 @@ export default function UserManagement() {
   const loadUsers = async () => {
     setLoading(true);
     try {
-      // TODO: Implement admin users endpoint in backend
-      // For now using placeholder data
-      setUsers([
-        {
-          id: '1',
-          email: 'admin@utilityPro.com',
-          firstName: 'Admin',
-          lastName: 'User',
-          role: 'ADMIN',
-          isActive: true,
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          email: 'manager@utilityPro.com',
-          firstName: 'Property',
-          lastName: 'Manager',
-          role: 'MANAGER',
-          isActive: true,
-          createdAt: new Date().toISOString(),
-        },
-        {
-          id: '3',
-          email: 'customer@example.com',
-          firstName: 'John',
-          lastName: 'Doe',
-          phone: '+30 123 456 7890',
-          role: 'CUSTOMER',
-          isActive: true,
-          createdAt: new Date().toISOString(),
-        },
-      ]);
+      const response = await adminService.getUsers({
+        page: 1,
+        limit: 100,
+      });
+
+      if (response.success && response.data) {
+        setUsers(response.data.data);
+      }
     } catch (error) {
       console.error('Failed to load users:', error);
       notifications.show({
@@ -114,16 +80,18 @@ export default function UserManagement() {
 
   const handleAddUser = async (values: typeof addUserForm.values) => {
     try {
-      // TODO: Implement admin create user endpoint
-      console.log('Creating user:', values);
-      notifications.show({
-        title: 'Success',
-        message: 'User created successfully',
-        color: 'green',
-      });
-      setAddModalOpened(false);
-      addUserForm.reset();
-      loadUsers();
+      const response = await adminService.createUser(values);
+      
+      if (response.success) {
+        notifications.show({
+          title: 'Success',
+          message: 'User created successfully',
+          color: 'green',
+        });
+        setAddModalOpened(false);
+        addUserForm.reset();
+        loadUsers();
+      }
     } catch (error) {
       notifications.show({
         title: 'Error',
@@ -135,14 +103,16 @@ export default function UserManagement() {
 
   const handleToggleUserStatus = async (userId: string, isActive: boolean) => {
     try {
-      // TODO: Implement user status toggle endpoint
-      console.log('Toggling user status:', userId, isActive);
-      notifications.show({
-        title: 'Success',
-        message: `User ${isActive ? 'activated' : 'deactivated'} successfully`,
-        color: 'green',
-      });
-      loadUsers();
+      const response = await adminService.updateUserStatus(userId, isActive);
+      
+      if (response.success) {
+        notifications.show({
+          title: 'Success',
+          message: `User ${isActive ? 'activated' : 'deactivated'} successfully`,
+          color: 'green',
+        });
+        loadUsers();
+      }
     } catch (error) {
       notifications.show({
         title: 'Error',
